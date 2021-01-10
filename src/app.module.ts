@@ -20,10 +20,13 @@ const environment = process.env.NODE_ENV || 'development';
     UserModule,
     AuthModule,
     configModule,
-    MongooseModule.forRoot(process.env.MONGODB_WRITE_CONNECTION_STRING, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }),
+    MongooseModule.forRoot(
+      'mongodb+srv://stas:moka11MOKA@cluster0.vi2se.mongodb.net/chat-app-bd',
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    ),
     TokenModule,
     MailModule,
     MessageModule,
