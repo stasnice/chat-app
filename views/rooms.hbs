@@ -3,7 +3,7 @@
     <a class="navbar-brand mx-auto" href="#">Simple chat</a>
   </div>
   <div class="col-3">
-    <a class="dropdown-item" href="https://asimple-chat.herokuapp.com/8080/auth/logout">Logout</a>
+    <a class="dropdown-item" href="https://asimple-chat.herokuapp.com:8080/auth/logout">Logout</a>
   </div>
 </nav>
 
@@ -14,7 +14,7 @@
     </div>
   </div>-->
   <div class="col-3 px-2">
-    <form action="https://asimple-chat.herokuapp.com/8080/rooms" method="GET">
+    <form action="https://asimple-chat.herokuapp.com:8080/rooms" method="GET">
       <h4>Search room</h4>
       <input type="text" placeholder="room name" name="searchText" required>
       <button type="submit" class="btn-sm btn-secondary">Search</button>
@@ -22,13 +22,13 @@
   </div>
   <div class="room-wrapper col-6 px-2">
     {{#each rooms}}
-      <a href="hhttps://asimple-chat.herokuapp.com/8080/rooms/{{_id}}/chat-room">
+      <a href="https://asimple-chat.herokuapp.com:8080/rooms/{{_id}}/chat-room">
         <button class="room-connect-btn btn btn-secondary w-100 mb-2">{{ name }}</button>
       </a>
     {{/each}}
   </div>
   <div class="col-3 px-2">
-    <form action="https://asimple-chat.herokuapp.com/8080/rooms/create" method="POST">
+    <form action="https://asimple-chat.herokuapp.com:8080/rooms/create" method="POST">
       <h4>Create new room</h4>
       <input type="text" placeholder="room name" name="name" required>
       <button type="submit" class="btn-sm btn-secondary">Create</button>
