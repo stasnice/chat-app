@@ -1,0 +1,108 @@
+<nav class="navbar navbar-expand-md navbar-light" style="background-color: #FFFFFF;">
+  <div class="col-9">
+    <a class="navbar-brand mx-auto" href="#">Simple chat</a>
+  </div>
+  <div class="col-3">
+    <a class="dropdown-item" href="/rooms">Back to rooms</a>
+  </div>
+</nav>
+<div class="container d-flex p-2 mt-3 justify-content-between" style="background-color: gainsboro; border-radius: 20px; height: 600px;">
+  <div class="col-8 p-2 mb-2" style="height: 650px;" id="chatWrapper">
+    <div id="chatBox" class="p-2" style="height: 500px; overflow-x:scroll; background-color: #FFFFFF; border-radius: 10px">
+      <!--process messages here-->
+      {{#each messages}}
+        <div class="msgBox">
+          <strong>{{ this.user.0.email }}</strong>: {{ this.text }}
+        </div>
+      {{/each}}
+    </div>
+    <form id="messageInput" onsubmit="return sendMsg(event)" class="mt-4">
+      <input type="text" placeholder="type your message here..." class="w-75" id="msgText" required>
+      <button id="sendBtn" class="btn-sm btn-secondary">Send</button>
+    </form>
+  </div>
+  <div class="col-4 p-2 mb-2" style="height: 700px;" id="usersWrapper">
+    <div class="container d-flex justify-content-between flex-wrap" id="usersContainer">
+      {{#each users}}
+          <div class="avatar-container" id="{{ this._id }}">
+            <div class="avatar-img">
+              <img src="https://picsum.photos/100/100" style="border: 1px solid grey;border-radius: 50%">
+            </div>
+            <div class="avatar-name d-flex justify-content-center">{{ this.email }}</div>
+          </div>
+        {{/each}}
+    </div>
+  </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+
+
+
+<script>
+  let socket = io.connect();
+  /*add call back to check connect or promise*/
+  socket.emit('setUserRoom', { roomId: getChatRoomId(), accessToken: getAccessToken() });
+
+  socket.on('serverToClient', function(msg) {
+    let chatBox = document.getElementById('chatBox');
+    let msgDiv = document.createElement('div');
+    msgDiv.innerText = msg.text;
+    let userStrong = document.createElement('strong')
+    userStrong.innerText = msg.user + ': ';
+    msgDiv.insertBefore(userStrong, msgDiv.firstChild);
+    chatBox.insertBefore(msgDiv, chatBox.firstChild);
+  });
+
+  socket.on('addUser', (data) => {
+    addUser(data);
+  })
+
+  socket.on('disconnectUser', (userId) => {
+    console.log('userid front: ', userId)
+    document.getElementById(userId).remove();
+  })
+
+  function addUser(data) {
+      let avatarContainer = document.createElement('div');
+      avatarContainer.classList.add('avatar-container');
+      avatarContainer.id = data.userId;
+
+      let avatarImg = document.createElement('div');
+      avatarImg.classList.add('avatar-img');
+      let img = document.createElement('img');
+      img.setAttribute('src', 'https://picsum.photos/100/100');
+      img.setAttribute('style', 'border: 1px solid grey;border-radius: 50%');
+
+      let avatarName = document.createElement('div');
+      avatarName.classList.add('avatar-name');
+      avatarName.classList.add('d-flex');
+      avatarName.classList.add('justify-content-center');
+      avatarName.innerText = data.user;
+
+      avatarImg.appendChild(img);
+      avatarContainer.appendChild(avatarImg);
+      avatarContainer.appendChild(avatarName);
+
+      document.getElementById('usersContainer').appendChild(avatarContainer);
+
+  }
+
+  function sendMsg(e) {
+    e.preventDefault();
+    let msgText = document.getElementById('msgText').value;
+    document.getElementById('msgText').value = '';
+    socket.emit('clientToServer', { text: msgText, accessToken: getAccessToken(), roomId: getChatRoomId() });
+  }
+
+  function getChatRoomId() {
+    let url = new URL(window.location.href);
+    return url.pathname.split('/')[2];
+  }
+
+  function getAccessToken() {
+    let separateCookies = document.cookie.split(';');
+    let userPart = separateCookies.filter((i) => i.trim().slice(0, 11) === 'accessToken');
+    return userPart[0].split('=')[1];
+  }
+
+</script>

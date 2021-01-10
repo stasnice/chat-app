@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-md navbar-light" style="background-color: #FFFFFF;">
+  <div class="col-9">
+    <a class="navbar-brand mx-auto" href="#">Simple chat</a>
+  </div>
+  <div class="col-3">
+    <a class="dropdown-item" href="http://localhost:3000/auth/logout">Logout</a>
+  </div>
+</nav>
+
+<div class="container-fluid d-flex m-2 justify-content-between">
+  <div class="search col-3 px-2">
+    <div class="active-pink-3 active-pink-4 mb-4">
+      <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+    </div>
+  </div>
+  <div class="room-wrapper col-6 px-2">
+    {{#each rooms}}
+      <a href="http://localhost:3000/rooms/{{_id}}/chat-room">
+        <button class="room-connect-btn btn btn-secondary w-100 mb-2">{{ name }}</button>
+      </a>
+    {{/each}}
+  </div>
+  <div class="col-3 px-2">
+    <form action="http://localhost:3000/rooms/create" method="POST">
+      <h4>Create new room</h4>
+      <input type="text" placeholder="room name" name="name" required>
+      <button type="submit" class="btn-sm btn-secondary">Create</button>
+    </form>
+  </div>
+</div>
+
+
+
+

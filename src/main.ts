@@ -1,0 +1,35 @@
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
+import hbs = require('hbs');
+import * as cookieParser from 'cookie-parser';
+import { AllExceptionsFilter } from './shared/exceptionFilter';
+
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.use(cookieParser());
+
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+  /* set hbs */
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('hbs');
+
+  hbs.registerPartials(join(__dirname, '..', 'views', 'partials'));
+
+  const options = new DocumentBuilder()
+    .setTitle('Chat api')
+    .setDescription('this is chat application')
+    .setVersion('1.0')
+    .addTag('chat')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('api', app, document);
+  await app.listen(3000);
+}
+bootstrap();
