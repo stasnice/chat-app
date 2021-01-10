@@ -8,10 +8,17 @@
 </nav>
 
 <div class="container-fluid d-flex m-2 justify-content-between">
-  <div class="search col-3 px-2">
+  <!--<div class="search col-3 px-2">
     <div class="active-pink-3 active-pink-4 mb-4">
       <input class="form-control" type="text" placeholder="Search" aria-label="Search">
     </div>
+  </div>-->
+  <div class="col-3 px-2">
+    <form action="http://localhost:3000/rooms" method="GET">
+      <h4>Search room</h4>
+      <input type="text" placeholder="room name" name="searchText" required>
+      <button type="submit" class="btn-sm btn-secondary">Search</button>
+    </form>
   </div>
   <div class="room-wrapper col-6 px-2">
     {{#each rooms}}

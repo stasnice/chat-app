@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 
 export class CreateMessageDto {
+  @ApiProperty()
   text: string;
 
   userId: Types.ObjectId;

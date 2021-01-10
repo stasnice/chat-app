@@ -1,6 +1,6 @@
 import {
   BadRequestException,
-  Injectable,
+  Injectable, NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -58,11 +58,10 @@ export class AuthService {
       safeUser.accessToken = token;
       return _.omit(safeUser, Object.values(ProtectedFieldsEnum));
     }
-    // TODO throw exception if there is no user
+    throw new NotFoundException();
   }
 
   async confirm(token: string): Promise<IUser> {
-    /* const tokenPayload = await this.jwtService.verify(token); */
     const tokenPayload = await this.getTokenPayload(token);
     const user = await this.userService.find(tokenPayload.uId);
     await this.tokenService.delete(tokenPayload.uId, token);
@@ -73,7 +72,7 @@ export class AuthService {
     throw new BadRequestException('Incorrect token!');
   }
 
-  async getTokenPayload(token: string) {
+  async getTokenPayload(token: string){
     return await this.jwtService.verify(token);
   }
 
@@ -98,8 +97,6 @@ export class AuthService {
     });
   }
 
-  /* check user status(optional), generate payload object (use user id, status and email)
-   * to create token, save token and return it */
   async signUser(user: IUser, withStatusCheck = true): Promise<string> {
     if (withStatusCheck && user.status !== statusEnum.active) {
       throw new BadRequestException('Wrong user status');
@@ -130,7 +127,7 @@ export class AuthService {
     return this.tokenService.create(createUserTokenDto);
   }
 
-  async verifyToken(token: string) {
+  async verifyToken(token: string): Promise<ITokenPayload> {
     try {
       const tokenPayload = this.jwtService.verify(token);
       const tokenExist = await this.tokenService.exist(tokenPayload.uId, token);
@@ -143,7 +140,7 @@ export class AuthService {
     }
   }
 
-  async changePassword({ password, token }: ChangePasswordDto) {
+  async changePassword({ password, token }: ChangePasswordDto): Promise<boolean> {
     const tokenPayload = await this.verifyToken(token);
     const newPassword = await this.userService.hashPassword(password);
 

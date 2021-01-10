@@ -40,7 +40,7 @@
 
 <script>
   let socket = io.connect();
-  /*add call back to check connect or promise*/
+
   socket.emit('setUserRoom', { roomId: getChatRoomId(), accessToken: getAccessToken() });
 
   socket.on('serverToClient', function(msg) {
@@ -58,7 +58,6 @@
   })
 
   socket.on('disconnectUser', (userId) => {
-    console.log('userid front: ', userId)
     document.getElementById(userId).remove();
   })
 

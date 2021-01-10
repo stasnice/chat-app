@@ -8,7 +8,7 @@ import { IUserToken } from './interfaces/user-token.interface';
 export class TokenService {
   constructor(@InjectModel('Token') private readonly tokenModel: Model<IUserToken>) {
   }
-  async create(createUserTokenDto: CreateUserTokenDto) {
+  async create(createUserTokenDto: CreateUserTokenDto): Promise<IUserToken> {
     const userToken = new this.tokenModel(createUserTokenDto);
     return userToken.save();
   }
@@ -25,7 +25,7 @@ export class TokenService {
     return this.tokenModel.exists({ uId, token });
   }
 
-  async existByToken(token: string) {
+  async existByToken(token: string): Promise<boolean> {
     return this.tokenModel.exists({ token });
   }
 }

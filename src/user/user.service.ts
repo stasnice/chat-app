@@ -12,7 +12,7 @@ export class UserService {
   private readonly saltRound = 10;
   constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
 
-  async hashPassword(password: string): Promise<string>{
+  async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(this.saltRound);
     return await bcrypt.hash(password, salt);
   }
@@ -32,8 +32,8 @@ export class UserService {
     return this.userModel.findOne({ email }).exec();
   }
 
-  async updatePassword(uId: string, password: string) {
-    const dbUpdateResult = await this.userModel.updateOne({_id: uId}, { password });
+  async updatePassword(uId: string, password: string): Promise<boolean> {
+    await this.userModel.updateOne({ _id: uId }, { password });
     return true;
   }
 }

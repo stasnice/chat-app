@@ -18,7 +18,7 @@ export class AuthController {
   @Post('/signIn')
   @Redirect('/rooms')
   async signIn(@Body() signInDto: SignInDto, @Res() res: Response) {
-    const { accessToken, email } = await this.authService.signIn(signInDto);
+    const { accessToken } = await this.authService.signIn(signInDto);
     res.cookie('accessToken', accessToken);
     return true;
   }
@@ -26,7 +26,7 @@ export class AuthController {
   @Redirect('../')
   @Post('/signUp')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    return await this.authService.signUp(createUserDto);
+    return this.authService.signUp(createUserDto);
   }
 
   @Redirect('../')

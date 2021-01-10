@@ -32,10 +32,9 @@ export class ChatGateway implements OnGatewayInit {
   async handleDisconnect(client: Socket) {
     const roomId = this.getChatRoomId(client.handshake.headers.referer);
     const userId = await this.getUserId(client.handshake.headers.cookie);
+
     await this.roomService.removeUserFromRoom(roomId, userId);
     this.wss.to(roomId).emit('disconnectUser', userId);
-
-    /*client.leave(roomId);*/
   }
 
   async getUserId(cookie: string) {

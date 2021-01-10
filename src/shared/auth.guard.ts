@@ -10,15 +10,8 @@ import { RoomService } from '../room/room.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    //private readonly messageService: MessageService,
     private readonly tokenService: TokenService,
-    //private readonly mailService: MailService,
-    //private readonly authService: AuthService,
-    //private readonly userService: UserService,
-    //private readonly roomService: RoomService,
-
-  ) {
-  }
+  ) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
