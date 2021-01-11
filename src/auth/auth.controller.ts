@@ -18,8 +18,8 @@ export class AuthController {
   @Post('/signIn')
   @Redirect(`/rooms`)
   async signIn(@Body() signInDto: SignInDto, @Res() res: Response) {
-    const { accessToken } = await this.authService.signIn(signInDto);
-    res.cookie('accessToken', accessToken);
+    /*const { accessToken } = await this.authService.signIn(signInDto);
+    res.cookie('accessToken', accessToken);*/
     return true;
   }
 
