@@ -58,7 +58,7 @@ export class AuthService {
       safeUser.accessToken = token;
       return _.omit(safeUser, Object.values(ProtectedFieldsEnum));
     }
-    throw new NotFoundException();
+    throw new NotFoundException('user not found');
   }
 
   async confirm(token: string): Promise<IUser> {
