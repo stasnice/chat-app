@@ -9,7 +9,7 @@ import { AuthGuard } from '../shared/auth.guard';
 import { SearchRoomDto } from './dto/search-room.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-//@UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @ApiTags('Rooms')
 @Controller('rooms')
 export class RoomController {
