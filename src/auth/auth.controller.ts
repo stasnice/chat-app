@@ -16,7 +16,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signIn')
-  @Redirect('/rooms')
+  @Redirect(`/rooms`)
   async signIn(@Body() signInDto: SignInDto, @Res() res: Response) {
     const { accessToken } = await this.authService.signIn(signInDto);
     res.cookie('accessToken', accessToken);
@@ -46,7 +46,7 @@ export class AuthController {
     return this.authService.changePassword(changePasswordDto);
   }
 
-  @Redirect('/rooms')
+  @Redirect('../')
   @Get('/logout')
   async logout(@Req() req: Request) {
     return this.authService.logout(req.cookies.accessToken);
