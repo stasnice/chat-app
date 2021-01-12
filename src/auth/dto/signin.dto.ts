@@ -6,6 +6,5 @@ export class SignInDto {
   @IsEmail()
   email: string;
   @ApiProperty()
-  @IsNotEmpty()
   password: string;
 }
