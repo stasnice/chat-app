@@ -16,3 +16,5 @@ export const UserSchema = new mongoose.Schema({
     default: statusEnum.pending,
   },
 });
+
+UserSchema.index({ email: 1 }, { unique: true });

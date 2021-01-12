@@ -8,7 +8,7 @@ import {
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -18,13 +18,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (status === 403) {
+    if (exception.code === 403 || exception.code === 401) {
       response.redirect([process.env.FE_APP_URL]);
+    } else if (exception.code === 11000) {
+      response.status(status).json({
+        statusCode: status,
+        message: 'This email is already exist',
+      });
     } else {
+      console.log('exception comsole log: ', exception);
       response.status(status).json({
         statusCode: status,
         timestamp: new Date().toISOString(),
         path: request.url,
+        message: exception.response.message,
       });
     }
   }
