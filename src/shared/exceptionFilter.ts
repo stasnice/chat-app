@@ -18,7 +18,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (exception.code === 403 || exception.code === 401) {
+    if (status === 403 || status === 401) {
       response.redirect([process.env.FE_APP_URL]);
     } else if (exception.code === 11000) {
       response.status(status).json({
@@ -26,7 +26,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message: 'This email is already exist',
       });
     } else {
-      console.log('exception comsole log: ', exception);
       response.status(status).json({
         statusCode: status,
         timestamp: new Date().toISOString(),

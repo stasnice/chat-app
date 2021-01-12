@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
       const userPart = separateCookies.filter((i) => i.trim().slice(0, 11) === 'accessToken');
       const token = userPart[0].split('=')[1];
 
-      return await this.tokenService.existByToken(token);
+      return await this.tokenService.existByToken(token || '');
     } catch (err) {
       throw new UnauthorizedException();
     }
