@@ -128,16 +128,12 @@ export class AuthService {
   }
 
   async verifyToken(token: string): Promise<ITokenPayload> {
-    try {
-      const tokenPayload = this.jwtService.verify(token);
-      const tokenExist = await this.tokenService.exist(tokenPayload.uId, token);
-      if (tokenExist) {
-        return tokenPayload;
-      }
-      throw new UnauthorizedException();
-    } catch (err) {
-      throw new UnauthorizedException(err);
+    const tokenPayload = this.jwtService.verify(token);
+    const tokenExist = await this.tokenService.exist(tokenPayload.uId, token);
+    if (tokenExist) {
+      return tokenPayload;
     }
+    throw new UnauthorizedException();
   }
 
   async changePassword({ password, token }: ChangePasswordDto): Promise<boolean> {
