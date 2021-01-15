@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
 
   async validateUser(request) {
     try {
-      const { headers, method, url } = request;
+      const { headers } = request;
       const separateCookies = headers.cookie.split(';');
       const userPart = separateCookies.filter((i) => i.trim().slice(0, 11) === 'accessToken');
       const token = userPart[0].split('=')[1];

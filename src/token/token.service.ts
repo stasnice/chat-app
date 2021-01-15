@@ -6,11 +6,10 @@ import { IUserToken } from './interfaces/user-token.interface';
 
 @Injectable()
 export class TokenService {
-  constructor(@InjectModel('Token') private readonly tokenModel: Model<IUserToken>) {
+  constructor(@InjectModel('Token') private readonly tokenModel: Model<IUserToken> ) {
   }
   async create(createUserTokenDto: CreateUserTokenDto): Promise<IUserToken> {
-    const userToken = new this.tokenModel(createUserTokenDto);
-    return userToken.save();
+    return new this.tokenModel(createUserTokenDto).save();
   }
 
   async delete(uId: string, token: string) {
