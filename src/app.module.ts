@@ -33,6 +33,6 @@ const environment = process.env.NODE_ENV || 'development';
     RoomModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ChatGateway, AuthGuard],
+  providers: [AppService, ChatGateway],
 })
 export class AppModule {}
